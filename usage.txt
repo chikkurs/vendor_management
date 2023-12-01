@@ -1,0 +1,178 @@
+Step 1: Run the Django development server
+Open a terminal, navigate to the root folder of your Django project, and run the following command:
+
+
+python manage.py runserver
+This will start the development server, and you can access the API at http://127.0.0.1:8000/.
+
+Step 2: Create a new vendor
+
+http POST http://127.0.0.1:8000/api/vendors/
+
+for eg:
+http POST http://127.0.0.1:8000/api/vendors/
+    name="ABC Company" \
+    contact_details="Phone: 123-456-7890, Email: abc@example.com" \
+    address="123 Main Street, Cityville, Country" \
+    vendor_code="VENDOR123" \
+    on_time_delivery_rate=95.5 \
+    quality_rating_avg=4.2 \
+    average_response_time=24.5 \
+    fulfillment_rate=98.0
+
+Step 3: Update an existing vendor
+To update an existing vendor, you need to know the vendor_id. Let's assume the vendor_id is 1. You can use a tool like httpie or curl to send a PUT request to update the vendor:
+
+
+http PUT http://127.0.0.1:8000/api/vendors/1/ \
+    name="Updated ABC Company" \
+    contact_details="Updated Phone: 123-456-7890, Email: updated_abc@example.com"
+
+Step 4: Get performance details of a specific vendor
+To get performance details of a specific vendor, again, you need to know the vendor_id. Let's assume the vendor_id is 1. You can use a tool like httpie or a web browser to access the performance details:
+
+
+http http://127.0.0.1:8000/api/vendors/1/performance/
+This will give you the performance details of the vendor with vendor_id 1.
+
+
+
+
+Step 1: Create a Purchase Order
+
+http POST http://127.0.0.1:8000/api/purchase_order/ \
+    po_number="PO123" \
+    vendor=1 \  # Assuming the vendor_id is 1, replace it with the actual vendor_id
+    order_date="2023-01-01T12:00:00Z" \
+    delivery_date="2023-01-10T12:00:00Z" \
+    items:='[{"item_name": "Item A", "price": 10.99}, {"item_name": "Item B", "price": 20.49}]' \
+    quantity=100 \
+    status="pending" \
+    quality_rating=null \
+    issue_date="2023-01-02T12:00:00Z" \
+    acknowledgment_date="2023-01-02T12:00:00Z"
+This will create a new purchase order.
+
+Step 2: Update an Existing Purchase Order
+To update an existing purchase order, you need to know the purchase_order_id. Let's assume the purchase_order_id is 1. You can use a tool like httpie or curl to send a PUT request to update the purchase order:
+
+bash
+Copy code
+http PUT http://127.0.0.1:8000/api/purchase_order/1/ \
+    po_number="UpdatedPO123" \
+    status="completed" \
+    quality_rating=4.5 \
+    acknowledgment_date="2023-01-03T12:00:00Z"
+This will update the purchase order with purchase_order_id 1.
+
+Step 3: Get Purchase Order Details
+To get details of a specific purchase order, again, you need to know the purchase_order_id. Let's assume the purchase_order_id is 1. You can use a tool like httpie or a web browser to access the purchase order details:
+
+
+http http://127.0.0.1:8000/api/purchase_order/1/
+This will give you the details of the purchase order with purchase_order_id 1.
+
+Step 4: Acknowledge a Purchase Order
+To acknowledge a purchase order, you can use the acknowledgment endpoint:
+
+
+http PUT http://127.0.0.1:8000/api/purchase_order/1/acknowledge/
+This assumes that acknowledging a purchase order is a separate endpoint
+
+
+Use Case: Managing Historical Performance Metrics
+
+Step 1: Record Historical Performance Metrics for a Vendor
+
+http POST http://127.0.0.1:8000/api/historical_performance/ \
+    vendor=1 \  # Assuming the vendor_id is 1, replace it with the actual vendor_id
+    date="2023-01-01T00:00:00Z" \
+    on_time_delivery_rate=95.5 \
+    quality_rating_avg=4.2 \
+    average_response_time=24.5 \
+    fulfillment_rate=98.0
+This will record historical performance metrics for the specified date and vendor.
+
+Step 2: Update Historical Performance Metrics for a Vendor
+To update historical performance metrics for a vendor, you need to know the historical_performance_id. Let's assume the historical_performance_id is 1. You can use a tool like httpie or curl to send a PUT request to update the historical performance metrics:
+
+
+
+http PUT http://127.0.0.1:8000/api/historical_performance/1/ \
+    on_time_delivery_rate=96.0 \
+    quality_rating_avg=4.5 \
+    average_response_time=23.0 \
+    fulfillment_rate=99.0
+This will update the historical performance metrics with historical_performance_id 1.
+
+Step 3: Get Historical Performance Metrics for a Vendor
+To get historical performance metrics for a specific vendor, again, you need to know the vendor_id. Let's assume the vendor_id is 1.
+
+http http://127.0.0.1:8000/api/historical_performance/?vendor=1
+This will give you the historical performance metrics for the specified vendor.
+
+For the Token based Authorization
+
+Sample Token :d5a57706215b5aac8dcff636e3e1f0deca949782
+
+Step 1: Install HTTPie
+Open a command prompt and enter the following command to install HTTPie:
+
+bash
+Copy code
+pip install httpie
+Step 2: Start the Django Development Server
+Navigate to the root project folder in the command prompt and run the Django development server:
+
+bash
+Copy code
+python manage.py runserver
+Step 3: Obtain a Token
+In a new command prompt, navigate to the root project folder and enter the following command to obtain a token:
+
+
+http post http://127.0.0.1:8000/api/token/ username=<your_username> password=<your_password>
+
+This will return a JSON response containing the token. Copy the token for further use.
+
+Step 4: Access Vendor API Endpoints
+4.1: Vendor List
+To retrieve the list of vendors:
+
+
+http http://127.0.0.1:8000/api/vendors/ "Authorization:Token <your_token>"
+4.2: Vendor Details
+To retrieve details of a specific vendor (replace <vendor_id> with the actual vendor ID):
+
+
+http http://127.0.0.1:8000/api/vendors/<vendor_id>/ "Authorization:Token <your_token>"
+Step 5: Access Vendor Performance API Endpoint
+To retrieve performance details of a specific vendor (replace <vendor_id> with the actual vendor ID):
+
+
+http http://127.0.0.1:8000/api/vendors/<vendor_id>/performance/ "Authorization:Token <your_token>"
+Step 6: Access Purchase Order API Endpoints
+6.1: Create a Purchase Order
+To create a new purchase order:
+
+
+http post http://127.0.0.1:8000/api/purchase_order/ "Authorization:Token <your_token>" \
+    po_number="PO123" \
+    vendor=<vendor_id> \
+    order_date="2023-01-01T12:00:00Z" \
+    delivery_date="2023-01-10T12:00:00Z" \
+    items:='[{"item_name": "Item A", "price": 10.99}, {"item_name": "Item B", "price": 20.49}]' \
+    quantity=100 \
+    status="pending" \
+    quality_rating=null \
+    issue_date="2023-01-02T12:00:00Z" \
+    acknowledgment_date="2023-01-02T12:00:00Z"
+6.2: Acknowledge a Purchase Order
+To acknowledge a purchase order (replace <purchase_order_id> with the actual purchase order ID):
+
+http put http://127.0.0.1:8000/api/purchase_order/<purchase_order_id>/acknowledge/ "Authorization:Token <your_token>"
+6.3: Get Purchase Order Details
+To retrieve details of a specific purchase order (replace <purchase_order_id> with the actual purchase order ID):
+
+
+http http://127.0.0.1:8000/api/purchase_order/<purchase_order_id>/ "Authorization:Token <your token>
